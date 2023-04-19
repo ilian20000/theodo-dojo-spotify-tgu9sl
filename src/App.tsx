@@ -20,6 +20,12 @@ const App = () => {
     setTrackIndex(trackIndex + 1);
   };
 
+  const goToPrevTrack = () => {
+    if(trackIndex>0){
+    setTrackIndex(trackIndex - 1)
+    };
+  };
+
   const { data: tracks, isLoading } = useQuery({
     queryKey: ['tracks'],
     queryFn: fetchTracks,
@@ -47,15 +53,19 @@ const App = () => {
             <img src={logo} className="App-logo" alt="logo" />
             <h1 className="App-title">Le WatiBlindtest LEZGO</h1>
           </header>
-          <AlbumCover track={currentTrack} />
+          <div className="App-buttons">
+            <AlbumCover track={currentTrack} />
+          </div>
           <div className="App-images">
-            <p>Track n°{tracks?.length}</p>
+            <p>Track n°{trackIndex + 1}</p>
             <p>Playing LIVE : {tracks?.[trackIndex]?.track.name}</p>
           </div>
 
           <audio src={currentTrack?.preview_url} autoPlay controls />
-          <button onClick={goToNextTrack}>NEXT TRAACK</button>
-          <div className="App-buttons"></div>
+          <div className="App-buttons">
+            <button onClick={goToPrevTrack}> PREV TRACK</button>
+            <button onClick={goToNextTrack}>NEXT TRAACK</button>
+          </div>
         </div>{' '}
       </>
     );
