@@ -1,9 +1,9 @@
-import logo from './assets/logo.svg';
+import logo from './assets/logo-spot.svg';
 import './App.css';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchTracks } from './lib/fetchTracks';
-import { SavedTrack } from 'spotify-types';
+import { SavedTrack, Track } from 'spotify-types';
 
 const App = () => {
   const trackUrls = [
@@ -24,13 +24,14 @@ const App = () => {
     queryKey: ['tracks'],
     queryFn: fetchTracks,
   });
-  console.log(tracks?.[0])
+  // console.log(tracks?.[0])
 
-  const AlbumCover = ({ track }:SavedTrack) => {
-    const src = track.album.images[0]; // A changer ;)
+  const AlbumCover = ({ track }: SavedTrack) => {
+    const src = track.album.images[0]?.url; // A changer ;)
     return <img src={src} style={{ width: 400, height: 400 }} />;
   };
-  let currentTrack = tracks?.[0] ;
+  let currentTrack = tracks?.[trackIndex]?.track;
+  console.log(currentTrack?.preview_url);
 
   if (isLoading) {
     return (
@@ -44,15 +45,15 @@ const App = () => {
         <div className="App">
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">LEZGOOO le blind test</h1>
+            <h1 className="App-title">Le WatiBlindtest LEZGO</h1>
           </header>
           <AlbumCover track={currentTrack} />
           <div className="App-images">
-            <p>Nombre : {tracks?.length}</p>
-            <p>Track1 : {tracks?.[0]?.track.name}</p>
+            <p>Track n°{tracks?.length}</p>
+            <p>Playing LIVE : {tracks?.[trackIndex]?.track.name}</p>
           </div>
 
-          <audio src={trackUrls[trackIndex]} autoPlay controls />
+          <audio src={currentTrack?.preview_url} autoPlay controls />
           <button onClick={goToNextTrack}>NEXT TRAACK</button>
           <div className="App-buttons"></div>
         </div>{' '}
